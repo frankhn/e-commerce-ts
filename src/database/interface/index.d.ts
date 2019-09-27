@@ -13,6 +13,10 @@ import { ProductCategoryInstance } from '../../resources/product_category/produc
 import { ProductCategoryAttributes } from '../../resources/product_category/_interface_/category';
 import { ReviewInstance } from '../../resources/products/review/review.model';
 import { ReviewAttributes } from '../../resources/products/review/_interface_/review';
+import { AttributesInstance } from '../../resources/attributes/attributes.model';
+import { AttAttributes } from '../../resources/attributes/__interface__/attributes';
+import { AttributesValuesInstance } from '../../resources/attributes/attribute_values/attribute_values.model';
+import { AttributesValuesAttributes } from '../../resources/attributes/attribute_values/__interface__/attributes_values';
 
 export interface DBInterface {
     sequelize: Sequelize.Sequelize;
@@ -24,4 +28,6 @@ export interface DBInterface {
     Category: Sequelize.Model<CategoryInstance, CategoryAttributes>
     ProductCategory: Sequelize.Model<ProductCategoryInstance, ProductCategoryAttributes>
     Review: Sequelize.Model<ReviewInstance, ReviewAttributes>
+    Attributes: Sequelize.Model<AttributesInstance, AttAttributes>
+    Attributes_values: Sequelize.Model<AttributesValuesInstance, AttributesValuesAttributes>
 }

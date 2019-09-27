@@ -8,6 +8,8 @@ import { ProductInit } from '../../resources/products/product.model';
 import { CategoryInit } from '../../resources/category/category.model';
 import { ProductCategoryInit } from '../../resources/product_category/product_category.model';
 import { ReviewInit } from '../../resources/products/review/review.model';
+import { AttributesInit } from '../../resources/attributes/attributes.model';
+import { Attributes_valuesInit } from '../../resources/attributes/attribute_values/attribute_values.model';
 
 dotenv.config()
 
@@ -26,7 +28,9 @@ const db: DBInterface = {
   Product: ProductInit(sequelize, Sequelize),
   Category: CategoryInit(sequelize, Sequelize),
   ProductCategory: ProductCategoryInit(sequelize, Sequelize),
-  Review: ReviewInit(sequelize, Sequelize)
+  Review: ReviewInit(sequelize, Sequelize),
+  Attributes: AttributesInit(sequelize, Sequelize),
+  Attributes_values: Attributes_valuesInit(sequelize, Sequelize)
 }
 
 Object.keys(db).forEach((ModelName) => {

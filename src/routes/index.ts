@@ -1,10 +1,11 @@
- import express from 'express';
+import express from 'express';
 import tax_router from '../resources/tax/tax.routes';
 import cart_router from '../resources/cart/cart.routes';
 import product_router from '../resources/products/products.routes';
 import category_router from '../resources/category/category.routes';
 import user_router from '../resources/users/user.routes';
 import payment_router from '../resources/stripe/payment.routes';
+import attributes_router from '../resources/attributes/attributes.routes';
 
 /** *************************************** */
 
@@ -44,6 +45,11 @@ app.use('/customers', user_router);
  * user
  */
 app.use('/stripe', payment_router);
+
+/**
+ * user
+ */
+app.use('/attributes', attributes_router);
 
 /** **************************************** */
 
