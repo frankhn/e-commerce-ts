@@ -1,51 +1,53 @@
 import jwt from 'jsonwebtoken';
-import 'dotenv/config';
-/** *******************************************
- * Class Token Validator
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+/**
+ * verify the user token
  */
-class Token {
-//   /**
-//    * @author frank harerimana
-//    * @param {*} req
-//    * @param {*} res
-//    * @param {*} next
-//    * @returns {*} verification
-//    ********************************************** */
+class verifyToken {
+    [x: string]: any;
+  /**
+   * @author frank harerimana
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {*} verification
+   */
+  constructor(req: any, res: any, next: any) {
+    this.req = req;
+    this.res = res;
+    this.next = next;
+  }
 
-//   /**
-//    * @author frank harerimana
-//    * @returns {*} authentication
-//    ********************************************** */
-//   public static validate(token: any) {
-//     jwt.verify(token[1], process.env.SECRETKEY, (error: any, decoded: { user: any; }) => {
-//       if (error) {
-//         return error;
-//       }
-//       return decoded.user;
-//     });
-//   }
-
-
-//   /**
-//    * @author frank harerimana
-//    * @returns {*} Token
-//    ********************************************** */
-//   public static checkToken(req: { headers: { authorization: any; }; }, res: any): void {
-//     if (req.headers.authorization) {
-//       return res.status(401).send({
-//         status: 401,
-//         error: 'authentication failed'
-//       });
-//     }
-//     const token = req.headers.authorization.split(' ')
-
-//     let payload;
-//     try {
-//       payload = <any>jwt.verify(token, process.env.SECRETKEY)
-//     } catch (error) {
-      
-//     }
-//   }
+  /**
+   * @author frank harerimana
+   * verify the user
+   * @returns {*} authentication
+   */
+  verify() {
+    const token = this.req.headers.authorization;
+    if (!token) {
+      return this.res.status(401).send({
+        status: 401,
+        error: 'authentication failed'
+      });
+    }
+    const split = token.split(' ');
+    jwt.verify(split[1], `${process.env.SECRETKEY}`, (error: any, decoded: any) => {
+      if (error) {
+        return this.res.status(401).send({
+          status: 401,
+          error: 'invalid token'
+        });
+      }
+      if (decoded) {
+        this.req.user = decoded.customer;
+        this.next();
+      }
+    });
+  }
 }
 
-export default Token;
+export default verifyToken;

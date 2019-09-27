@@ -1,15 +1,13 @@
 export interface ProductAttributes {
     id?: string
     name: string
-    category: string
+    description: Text
     price: number
-    status?: 'trending' | '' | ''
-    description: string
-    discount?: number
-    city?: Array<string>
-    country: Array<string>
-    gallery?: Array<string>
-    brand: string
+    discounted_price?: number
+    image?: Text
+    image_2?: Text
+    thumbnail: Text
+    display?: number
     createdAt?: Date
     updatedAt?: Date 
 }

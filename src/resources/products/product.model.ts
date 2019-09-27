@@ -13,54 +13,40 @@ export const ProductInit = (sequelize: Sequelize.Sequelize, Sequelize: Sequelize
       defaultValue: Sequelize.UUIDV4
     },
     name: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
       unique: true
     },
-    category: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4
+    description: {
+      type: Sequelize.TEXT,
+      allowNull: false
     },
     price: {
-      type: Sequelize.REAL,
+      type: Sequelize.DECIMAL(10, 2),
+      allowNull: false
+    },
+    discounted_price: {
+      type: Sequelize.DECIMAL(10, 2),
+      allowNull: false,
+      defaultValue: 0.00
+    },
+    image: {
+      type: Sequelize.TEXT,
+      allowNull: false
+    },
+    image_2: {
+      type: Sequelize.TEXT,
       allowNull: true
     },
-    status: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    description: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    discount: {
-      type: Sequelize.REAL,
+    thumbnail: {
+      type: Sequelize.TEXT,
       allowNull: true
     },
-    city: {
-      type: Sequelize.ARRAY(Sequelize.UUID),
-      allowNull: true
+    display: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+      defaultValue: 0
     },
-    country: {
-      type: Sequelize.ARRAY(Sequelize.UUID),
-      allowNull: true
-    },
-    gallery: {
-      type: Sequelize.ARRAY(Sequelize.STRING),
-      allowNull: false
-    },
-    brand: {
-      type: Sequelize.UUID,
-      allowNull: false
-    },
-    createdAt: {
-      type: Sequelize.DATE,
-      allowNull: false
-    },
-    updatedAt: {
-      type: Sequelize.DATE,
-      allowNull: false
-    }
   }
   return sequelize.define<ProductInstance, ProductAttributes>('products', Product, {
     tableName: 'products'

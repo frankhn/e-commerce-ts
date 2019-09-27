@@ -1,5 +1,5 @@
 import db from "../../database/models"
-import { OK, BAD_REQUEST, NOT_FOUND } from '../../constants/StatusCodes';
+import { OK, BAD_REQUEST, NOT_FOUND, CREATED } from '../../constants/StatusCodes';
 
 class CRUDOperations {
 
@@ -7,7 +7,6 @@ class CRUDOperations {
 
     public createOne = async (req: any, res: any) => {
         try {
-            console.log(req.body)
             const result = await db[this.model].create(req.body)
             res.status(OK).json({
                 status: OK,
@@ -52,7 +51,25 @@ class CRUDOperations {
         }
     }
     public update = async () => { }
-    public delete = () => { }
+    public deleteOne = async (req: any, res: any, next: any) => {
+        try {
+            const result = await db[this.model].destroy({
+                where: {
+                    id: req.params.id
+                }
+            })
+            res.status(CREATED).json({
+                status: CREATED,
+                count: result.length,
+                rows: result,
+            })
+        } catch (error) {
+            res.status(BAD_REQUEST).json({
+                status: BAD_REQUEST,
+                error
+            });
+        }
+    }
     public getMany = async (req: any, res: any, next: any) => {
         try {
             const result = await db[this.model].findAll({
@@ -62,6 +79,30 @@ class CRUDOperations {
                         'updatedAt'
                     ]
                 }
+            })
+            res.status(OK).json({
+                status: 200,
+                count: result.length,
+                rows: result,
+            })
+        } catch (error) {
+            res.status(BAD_REQUEST).json({
+                status: BAD_REQUEST,
+                error
+            });
+        }
+    }
+
+    public getManyByID = async (req: any, res: any, next: any) => {
+        try {
+            const result = await db[this.model].findAll({
+                attributes: {
+                    exclude: [
+                        'createdAt',
+                        'updatedAt'
+                    ]
+                },
+                where: { id: req.params.id }
             })
             res.status(OK).json({
                 status: 200,

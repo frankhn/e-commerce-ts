@@ -3,8 +3,11 @@ import dotenv from 'dotenv'
 import { DBInterface } from '../interface/index';
 import { UserInit } from '../../resources/users/user.model';
 import { TaxInit } from '../../resources/tax/tax.model';
-import { UserPendingRegistrationInit } from '../../resources/users/user_pending_registration/user_pending_registration.model';
 import { CartInit } from '../../resources/cart/cart.model';
+import { ProductInit } from '../../resources/products/product.model';
+import { CategoryInit } from '../../resources/category/category.model';
+import { ProductCategoryInit } from '../../resources/product_category/product_category.model';
+import { ReviewInit } from '../../resources/products/review/review.model';
 
 dotenv.config()
 
@@ -20,7 +23,10 @@ const db: DBInterface = {
   User: UserInit(sequelize, Sequelize),
   Tax: TaxInit(sequelize, Sequelize),
   Cart: CartInit(sequelize, Sequelize),
-  UserPendingRegistration: UserPendingRegistrationInit(sequelize, Sequelize)
+  Product: ProductInit(sequelize, Sequelize),
+  Category: CategoryInit(sequelize, Sequelize),
+  ProductCategory: ProductCategoryInit(sequelize, Sequelize),
+  Review: ReviewInit(sequelize, Sequelize)
 }
 
 Object.keys(db).forEach((ModelName) => {

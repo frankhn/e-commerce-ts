@@ -10,39 +10,16 @@ export const UserInit = (sequelize: Sequelize.Sequelize, Sequelize: Sequelize.Da
   const user: SequelizeAttributes<UserAttributes> = {
     id: {
       allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4
+      type: Sequelize.INTEGER,
     },
-    firstname: {
-      type: Sequelize.STRING,
+    name: {
+      type: Sequelize.STRING(50),
       allowNull: false,
-      validate: {
-        len: {
-          args: [2, 100],
-          msg: 'was that a name'
-        },
-      }
-    },
-    lastname: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        len: {
-          args: [2, 100],
-          msg: 'was that a name'
-        },
-      }
-    },
-    username: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        len: {
-          args: [3, 50],
-          msg: 'username must be at least 2 characters'
-        },
+       validate: {
+        is: ['^[a-z]+$', 'i'],
+        notEmpty: true,
       }
     },
     email: {
@@ -59,34 +36,73 @@ export const UserInit = (sequelize: Sequelize.Sequelize, Sequelize: Sequelize.Da
         }
       }
     },
-    birth_day: {
-      type: Sequelize.DATE,
-      allowNull: true
-    },
     password: {
-      type: Sequelize.TEXT,
-      allowNull: true,
+      type: Sequelize.STRING(100),
+      allowNull: false,
       validate: {
         validate() {
           this.password = Encrypt.encrypt(this.password);
         }
       }
     },
-    role: {
-      type: Sequelize.ENUM('super', 'admin', 'user', 'seller', 'staff'),
-      defaultValue: 'user'
+    credit_card: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+      validate: {
+        isCreditCard: true,
+      }
     },
-    avatar: {
-      type: Sequelize.STRING,
+    region: {
+      type: Sequelize.STRING(100),
+      allowNull: true
+    },
+    address_1: {
+      type: Sequelize.STRING(100),
+      allowNull: true
+    },
+    address_2: {
+      type: Sequelize.STRING(100),
       allowNull: true
     },
     city: {
-      type: Sequelize.ARRAY(Sequelize.UUID),
-      allowNull: false
+      type: Sequelize.STRING,
+      allowNull: true
     },
     country: {
-      type: Sequelize.ARRAY(Sequelize.UUID),
-      allowNull: false
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    postal_code: {
+      type: Sequelize.STRING(100),
+      allowNull: true,
+      validate: {
+        isNumeric: true,
+      }
+    },
+    shipping_region_id: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+    },
+    day_phone: {
+      type: Sequelize.STRING(100),
+      allowNull: true,
+      validate: {
+        isNumeric: true,
+      }
+    },
+    eve_phone: {
+      type: Sequelize.STRING(100),
+      allowNull: true,
+      validate: {
+        isNumeric: true,
+      }
+    },
+    mob_phone: {
+      type: Sequelize.STRING(100),
+      allowNull: true,
+      validate: {
+        isNumeric: true,
+      }
     },
     createdAt: {
       allowNull: false,
@@ -97,7 +113,7 @@ export const UserInit = (sequelize: Sequelize.Sequelize, Sequelize: Sequelize.Da
       type: Sequelize.DATE
     }
   }
-  return sequelize.define<UserInstance, UserAttributes>('users', user, {
-    tableName: 'users'
+  return sequelize.define<UserInstance, UserAttributes>('customer', user, {
+    tableName: 'customers'
   })
 };

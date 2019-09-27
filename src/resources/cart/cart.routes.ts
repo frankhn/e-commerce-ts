@@ -22,29 +22,29 @@ cart_router
 .post(celebrate({ body: validations.addToCart }), cart.createOne);
 
 // get list of products in a cart
-// cart_router
-// .route('/:cartId(\\d+)')
-// .get(cart.listOfProductsInCart);
+cart_router
+.route('/:cartId(\\d+)')
+.get(cart.listOfProductsInCart);
 
 // // update cart by item
-// cart_router
-// .route('/update/:cartId(\\d+)')
-// .put(celebrate({ body: validations.updateCart }), cart.updateCartByItem);
+cart_router
+.route('/update/:cartId(\\d+)')
+.put(celebrate({ body: validations.updateCart }), cart.updateCartByItem);
 
 // // empty the cart
-// cart_router
-// .route('/empty/:cartId(\\d+)')
-// .delete(cart.emptyCart);
+cart_router
+.route('/empty/:cartId(\\d+)')
+.delete(cart.emptyCart);
 
-// // moveToCart
-// // router.get('moveToCart/:itemID(\\d+)', (req, res, next) => {
-// //   new TokenValidator(req, res, next).verify();
-// // }, cart.MoveAProductToCart);
+// Review
+// router.get('moveToCart/:itemID(\\d+)', (req, res, next) => {
+//   new TokenValidator(req, res, next).verify();
+// }, cart.MoveAProductToCart);
 
-// // total amount in cart
-// cart_router
-// .route('/totalAmount/:cartId(\\d+)')
-// .get(cart.TotalAmountFromCart);
+// total amount in cart
+cart_router
+.route('/totalAmount/:cartId(\\d+)')
+.get(cart.TotalAmountFromCart);
 
 // // save product for later
 // cart_router
