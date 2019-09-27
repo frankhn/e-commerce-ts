@@ -77,7 +77,7 @@ i would recommend HEROKU which is the hosting i used on this app, depending on y
 
 Demo:
 
-heroku: https://turing-backend-shopmate.herokuapp.com
+heroku: https://turing-ecommerce-challenge.herokuapp.com/
 
 
 You can read more on how to host a node js application on heroku https://devcenter.heroku.com/articles

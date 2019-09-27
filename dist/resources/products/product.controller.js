@@ -51,9 +51,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var CRUDOperations_1 = __importDefault(require("../utils/CRUDOperations"));
 var models_1 = __importDefault(require("../../database/models"));
+var Sequelize = __importStar(require("sequelize"));
+var StatusCodes_1 = require("../../constants/StatusCodes");
+var Op = Sequelize.Op;
 var Product = /** @class */ (function (_super) {
     __extends(Product, _super);
     function Product() {
@@ -74,8 +84,8 @@ var Product = /** @class */ (function (_super) {
                     case 1:
                         category = _a.sent();
                         if (!category) {
-                            return [2 /*return*/, res.status(404).json({
-                                    status: 404,
+                            return [2 /*return*/, res.status(StatusCodes_1.BAD_REQUEST).json({
+                                    status: StatusCodes_1.BAD_REQUEST,
                                     message: 'category not found'
                                 })];
                         }
@@ -117,16 +127,16 @@ var Product = /** @class */ (function (_super) {
                         return [4 /*yield*/, Promise.all(productArray)];
                     case 3:
                         result = _a.sent();
-                        return [2 /*return*/, res.status(200).json({
-                                status: 200,
+                        return [2 /*return*/, res.status(StatusCodes_1.OK).json({
+                                status: StatusCodes_1.OK,
                                 category: category.name,
                                 count: result.length,
                                 result: result
                             })];
                     case 4:
                         error_1 = _a.sent();
-                        res.status(400).json({
-                            status: 400,
+                        res.status(StatusCodes_1.BAD_REQUEST).json({
+                            status: StatusCodes_1.BAD_REQUEST,
                             error: error_1
                         });
                         return [3 /*break*/, 5];
@@ -193,19 +203,70 @@ var Product = /** @class */ (function (_super) {
                         return [4 /*yield*/, Promise.all(productArray)];
                     case 3:
                         result = _a.sent();
-                        res.status(200).json({
-                            status: 200,
+                        res.status(StatusCodes_1.OK).json({
+                            status: StatusCodes_1.OK,
                             result: result
                         });
                         return [3 /*break*/, 5];
                     case 4:
                         error_2 = _a.sent();
-                        res.status(400).json({
-                            status: 400,
+                        res.status(StatusCodes_1.BAD_REQUEST).json({
+                            status: StatusCodes_1.BAD_REQUEST,
                             error: error_2
                         });
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
+                }
+            });
+        }); };
+        _this.search = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var term, result, error_3;
+            var _a, _b, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        _d.trys.push([0, 2, , 3]);
+                        term = req.query.term;
+                        return [4 /*yield*/, models_1.default[this.model].findAll({
+                                attributes: {
+                                    exclude: [
+                                        'createdAt',
+                                        'updatedAt'
+                                    ]
+                                },
+                                where: (_a = {},
+                                    _a[Op.or] = {
+                                        name: (_b = {},
+                                            _b[Op.iLike] = '%' + term + '%',
+                                            _b),
+                                        description: (_c = {},
+                                            _c[Op.iLike] = '%' + term + '%',
+                                            _c)
+                                    },
+                                    _a)
+                            })];
+                    case 1:
+                        result = _d.sent();
+                        if (result.length > 0) {
+                            return [2 /*return*/, res.status(StatusCodes_1.OK).json({
+                                    status: StatusCodes_1.OK,
+                                    message: 'Search results',
+                                    result: result
+                                })];
+                        }
+                        return [2 /*return*/, res.status(StatusCodes_1.OK).json({
+                                status: StatusCodes_1.OK,
+                                message: 'no products found'
+                            })];
+                    case 2:
+                        error_3 = _d.sent();
+                        res.status(StatusCodes_1.BAD_REQUEST).json({
+                            status: StatusCodes_1.BAD_REQUEST,
+                            message: 'an error occurred',
+                            error: error_3
+                        });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); };
