@@ -2,9 +2,9 @@
   "name": "comapits",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "dist/app.js",
   "scripts": {
-    "start": "npm run build && node ./dist/server.js",
+    "start": "node ./dist/server.js",
     "dev": "npm run build:live",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
