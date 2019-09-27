@@ -15,7 +15,7 @@ const review = new Review();
 product_router.get('/', product.getMany);
 
 // search products
-// router.get('/search?keyword=', product.search);
+product_router.get('/search', product.search);
 
 // get one product
 product_router.get('/:id(\\d+)', product.readOne);

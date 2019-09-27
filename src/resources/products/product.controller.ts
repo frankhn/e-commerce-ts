@@ -1,6 +1,10 @@
 import CRUDOperations from '../utils/CRUDOperations';
 import { Request, Response } from 'express';
 import db from '../../database/models';
+import * as Sequelize from 'sequelize';
+import { OK, BAD_REQUEST } from '../../constants/StatusCodes';
+
+const Op = Sequelize.Op
 class Product extends CRUDOperations {
     protected model = 'Product'
 
@@ -13,8 +17,8 @@ class Product extends CRUDOperations {
         where: { id: categoryId }
       });
       if (!category) {
-        return res.status(404).json({
-          status: 404,
+        return res.status(BAD_REQUEST).json({
+          status: BAD_REQUEST,
           message: 'category not found'
         });
       }
@@ -47,15 +51,15 @@ class Product extends CRUDOperations {
         productArray.push(getProducts(productsIdArray[i]));
       }
       const result = await Promise.all(productArray);
-      return res.status(200).json({
-        status: 200,
+      return res.status(OK).json({
+        status: OK,
         category: category.name,
         count: result.length,
         result
       });
     } catch (error) {
-      res.status(400).json({
-        status: 400,
+      res.status(BAD_REQUEST).json({
+        status: BAD_REQUEST,
         error
       });
     }
@@ -103,15 +107,56 @@ class Product extends CRUDOperations {
         productArray.push(getProducts(productIds[i]));
       }
       const result = await Promise.all(productArray);
-      res.status(200).json({
-        status: 200,
+      res.status(OK).json({
+        status: OK,
         result
       });
     } catch (error) {
-      res.status(400).json({
-        status: 400,
+      res.status(BAD_REQUEST).json({
+        status: BAD_REQUEST,
         error
       });
+    }
+  }
+
+  public search = async (req: any, res: any) => {
+    try {
+      const { term } = req.query;
+    const result = await db[this.model].findAll({
+      attributes: {
+            exclude: [
+              'createdAt',
+              'updatedAt'
+            ]
+          },
+      where: {
+        [Op.or]: {
+          name: {
+          [Op.iLike]: '%'+ term + '%',
+        },
+        description: {
+          [Op.iLike]: '%'+ term + '%'
+        }
+        }
+      }
+    })
+    if (result.length >0) {
+      return res.status(OK).json({
+      status: OK,
+      message: 'Search results',
+      result
+    })
+    }
+    return res.status(OK).json({
+      status: OK,
+      message: 'no products found'
+    })
+    } catch (error) {
+      res.status(BAD_REQUEST).json({
+        status: BAD_REQUEST,
+        message: 'an error occurred',
+        error
+      })
     }
   }
 }
